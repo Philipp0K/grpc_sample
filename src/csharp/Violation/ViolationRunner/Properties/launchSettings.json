@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ViolationRunner": {
+      "commandName": "Project",
+      "commandLineArgs": "xz localhost 12345"
+    }
+  }
+}

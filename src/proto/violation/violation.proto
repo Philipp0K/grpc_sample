@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+package bsvt.stroibat;
+
+option csharp_namespace = "Bsvt.Stroibat";
+
+message Violation {
+	int32 id = 1;
+	int32 camera_id = 2;
+	google.protobuf.Timestamp start_time = 3;
+	google.protobuf.Timestamp stop_time = 4;
+}
+
+message Rect {
+	int32 x = 1;
+	int32 y = 2;
+	int32 w = 3;
+	int32 h = 4;
+}
+
+message ViolationMeta {
+	int32 type = 1;
+	Rect roi = 2;
+}
+
+message ViolationOnFrame {
+	int32 violation_id = 1;
+	google.protobuf.Timestamp frame_time = 2;
+	repeated ViolationMeta violations = 3;
+}
+
+message ViolationRegisterRequest {
+	int32 camera_id = 1;
+}
+
+message AddViloationRequest {
+	int32 camera_id = 2;
+	google.protobuf.Timestamp start_time = 3;
+	google.protobuf.Timestamp stop_time = 4;
+}
+
+message AddViolationResponse {
+	int32 id = 1;
+}
+
+message GetViolationRequest {
+	int32 id = 1;
+}
+
+message GetViolationResponse {
+	Violation item = 1;
+}
+
+message GetViolationListRequest {
+	string camera_path = 1;
+	int32 violation_type = 2;
+}
+
+service ViolationService {
+	rpc AddViloation(AddViloationRequest) returns (AddViolationResponse);
+	rpc GetViolation(GetViolationRequest) returns (Violation);
+	rpc GetViolationList(GetViolationListRequest) returns (stream Violation);
+	rpc EnumerateViolations(google.protobuf.Empty) returns (stream Violation);
+}
